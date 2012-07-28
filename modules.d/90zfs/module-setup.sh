@@ -62,8 +62,8 @@ install() {
 	#
 	tmpf=`mktemp` ; tmpp=lk23jlkjflsa9f209jfsdlkfjlvfsaf
 	dd if=/dev/zero of="$tmpf" bs=1048576 count=64 2>/dev/null
-	@sbindir@/zpool create -m none "$tmpp" "$tmpf"
-	@sbindir@/zpool destroy "$tmpp"
+	/sbin/zpool create -m none "$tmpp" "$tmpf"
+	/sbin/zpool destroy "$tmpp"
 	rm -f "$tmpf"
 	inst /etc/zfs/zpool.cache
 	inst_binary zfs
