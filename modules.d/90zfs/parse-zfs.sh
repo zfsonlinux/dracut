@@ -3,13 +3,13 @@
 . /lib/dracut-lib.sh
 
 # Let the command line override our host id.
-spl_hostid=`getarg spl_hostid=`
+spl_hostid=$(getarg spl_hostid=)
 if [ "${spl_hostid}" != "" ] ; then
 	info "ZFS: Using hostid from command line: ${spl_hostid}"
-	AA=`echo ${spl_hostid} | cut -b 1,2`
-	BB=`echo ${spl_hostid} | cut -b 3,4`
-	CC=`echo ${spl_hostid} | cut -b 5,6`
-	DD=`echo ${spl_hostid} | cut -b 7,8`
+	AA=$(echo ${spl_hostid} | cut -b 1,2)
+	BB=$(echo ${spl_hostid} | cut -b 3,4)
+	CC=$(echo ${spl_hostid} | cut -b 5,6)
+	DD=$(echo ${spl_hostid} | cut -b 7,8)
 	printf "\x$DD\x$CC\x$BB\x$AA" >/etc/hostid
 elif [ -f /etc/hostid ] ; then
 	info "ZFS: Using hostid from /etc/hostid: `hostid`"
@@ -18,7 +18,7 @@ else
 	warn "ZFS: Pools may not import correctly."
 fi
 
-case "$root" in
+case "${root}" in
 	""|zfs|zfs:)
 		# We'll take root unset, root=zfs, or root=zfs:
 		# No root set, so we want to read the bootfs attribute.  We
@@ -54,5 +54,5 @@ esac
 # modules to settle before mounting.
 if [ "${wait_for_zfs}" = "1" ]; then
 	ln -s /dev/null /dev/root 2>/dev/null
-	echo '[ -e /dev/zfs ]' > $hookdir/initqueue/finished/zfs.sh
+	echo '[ -e /dev/zfs ]' > ${hookdir}/initqueue/finished/zfs.sh
 fi

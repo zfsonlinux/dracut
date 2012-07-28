@@ -2,7 +2,7 @@
 
 _do_zfs_shutdown() {
 
-  if [ "`zpool list 2>&1`" != "no pools available" ] ; then
+  if [ "$(zpool list 2>&1)" != "no pools available" ] ; then
 
     info "Cleaning up LUKS devices stored in ZVOLs"
     for i in /dev/mapper/luks-*; do
@@ -17,7 +17,7 @@ _do_zfs_shutdown() {
     umount /sysroot > /dev/null 2>&1
 
     info "Discovering active ZFS pools"
-    local pools=`zpool list -H -o name`
+    local pools=$(zpool list -H -o name)
     for pool in $pools ; do
         info "Exporting ZFS pool $pool"
         zpool export $pool # 2>&1 | grep -v /sysroot 1>&2
@@ -30,7 +30,7 @@ _do_zfs_shutdown() {
     done
     dmsetup -v remove_all >/dev/null 2>&1
 
-    local name=`basename "$0"`
+    local name="${0##*/}"
     info "ZFS shutdown complete at stage $name"
     unset name
 
